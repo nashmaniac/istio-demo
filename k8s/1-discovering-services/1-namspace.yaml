@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: default
   labels:
-    istio-injection: enabled
+    istio-injection: enabled # this is necessary coz without this the istio proxy will not work

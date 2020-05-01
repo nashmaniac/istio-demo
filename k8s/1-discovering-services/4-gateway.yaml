@@ -1,15 +1,15 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: ingressgateway
-  namespace: default
+  name: ingressgateway  #self explanatory
+  namespace: default #self explantory
 spec:
-  servers:
-    - port:
+  servers: # can have multiple server configuration
+    - port: # this configuration actually means that we will be allow http connection on port 80 for 3 domains which are listed under hosts
         number: 80
         name: http
         protocol: HTTP
-      hosts:
+      hosts: # 3 domains for which we will be accepting requests
         - microservice.retailvoice.xyz
         - user.microservice.retailvoice.xyz
         - product.microservice.retailvoice.xyz
