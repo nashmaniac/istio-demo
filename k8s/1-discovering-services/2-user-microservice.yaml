@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+  labels:
+    app: user
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      name: user-template
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user-microservice-container
+          image: gcr.io/nomadic-mesh/microservice/user
+          imagePullPolicy: Always
+          env:
+            - name: APP_NAME
+              value: "User"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http-user-service

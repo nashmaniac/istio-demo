@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: user-virtual-service
+  namespace: default
+spec:
+  hosts:
+    - user.microservice.retailvoice.xyz
+  gateways:
+    - ingressgateway
+  http:
+    - route:
+        - destination:
+            host: user-service.default.svc.cluster.local
+            port:
+              number: 8000
