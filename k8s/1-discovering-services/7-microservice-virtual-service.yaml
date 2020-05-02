@@ -5,14 +5,14 @@ metadata:
   namespace: default
 spec:
   hosts:
-    - microservice.retailvoice.xyz
+    - microservice.retailvoice.xyz #allowed host
   gateways:
-    - ingressgateway
+    - ingressgateway # list of gateway from which we will be getting request forwarded
   http:
     - name: user-http-route
       match:
         - uri:
-            prefix: "/user"
+            prefix: "/user" # if url starts with /user like http://microservice.retailvoice.xyz/user will be directed here
       rewrite:
         uri: "/"
       route:
@@ -28,6 +28,6 @@ spec:
               number: 8000
       match:
         - uri:
-            prefix: "/product"
+            prefix: "/product" # if url starts with /user like http://microservice.retailvoice.xyz/user will be directed here
       rewrite:
         uri: "/"

@@ -15,6 +15,6 @@ spec:
     #   you can omit the port configuration portion
     - route:
         - destination:
-            host: user-service.default.svc.cluster.local
+            host: user-service.default.svc.cluster.local # this format is safe. But if virtual service and cluster ip service are in same namespace only service name user-service would be enough
             port:
               number: 8000
