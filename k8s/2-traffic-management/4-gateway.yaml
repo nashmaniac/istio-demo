@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ingressgateway  #self explanatory
+  namespace: traffic-management #self explantory
+spec:
+  servers: # can have multiple server configuration
+    - port: # this configuration actually means that we will be allow http connection on port 80 for 3 domains which are listed under hosts
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts: # 3 domains for which we will be accepting requests
+        - traffic-management.retailvoice.xyz
+        - user.traffic-management.retailvoice.xyz
+        - product.traffic-management.retailvoice.xyz

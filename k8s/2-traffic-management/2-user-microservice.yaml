@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment # make sure the name of two deployment to be different
+  namespace: traffic-management # setting namespace to default
+  labels:
+    app: user
+spec:
+  replicas: 1 #setting replica count to 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      name: user-template
+      labels:
+        app: user
+        version: v1 # adding version to group all the version pods.
+    spec:
+      containers:
+        - name: user-microservice-container
+          image: gcr.io/nomadic-mesh/microservice/user:v1 #image changed
+          imagePullPolicy: Always
+          env:
+            - name: APP_NAME
+              value: "User V1"
+            - name: VERSION # Introduced new version
+              value: "v1"
+            - name: PYTHONBUFFERED
+              value: "1"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment-v2 # making unique name for the deployment
+  namespace: traffic-management
+  labels:
+    app: user
+spec:
+  replicas: 1 #setting replica count to 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      name: user-template
+      labels:
+        app: user
+        version: v2 # setting version to v2
+    spec:
+      containers:
+        - name: user-microservice-container
+          image: gcr.io/nomadic-mesh/microservice/user:v2 #new image
+          imagePullPolicy: Always
+          env:
+            - name: APP_NAME
+              value: "User V2"
+            - name: VERSION # added version
+              value: "v2"
+            - name: PYTHONBUFFERED
+              value: "1"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: traffic-management
+spec:
+  selector:
+    app: user
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http-user-service

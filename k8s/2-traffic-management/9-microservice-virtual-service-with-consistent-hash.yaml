@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: microservice-virtual-service
+  namespace: traffic-management
+spec:
+  hosts:
+    - traffic-management.retailvoice.xyz #allowed host
+  gateways:
+    - traffic-management/ingressgateway # list of gateway from which we will be getting request forwarded
+  http:
+    - name: user-http-route
+      match:
+        - uri:
+            prefix: "/user" # if url starts with /user like http://microservice.retailvoice.xyz/user will be directed here
+      rewrite:
+        uri: "/"
+      route:
+        - destination:
+            host: user-service.traffic-management.svc.cluster.local
+            subset: all
+    - name: product-http-route
+      route:
+        - destination:
+            host: product-service.traffic-management.svc.cluster.local
+            port:
+              number: 8000
+      match:
+        - uri:
+            prefix: "/product" # if url starts with /user like http://microservice.retailvoice.xyz/user will be directed here
+      rewrite:
+        uri: "/"

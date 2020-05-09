@@ -1,38 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-deployment
+  name: product-deployment
+  namespace: traffic-management
   labels:
-    app: user
+    app: product
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user
+      app: product
   template:
     metadata:
-      name: user-template
+      name: product-template
       labels:
-        app: user
+        app: product
     spec:
       containers:
-        - name: user-microservice-container
-          image: gcr.io/nomadic-mesh/microservice/user
+        - name: product-microservice-container
+          image: gcr.io/nomadic-mesh/microservice/product
           imagePullPolicy: Always
           env:
             - name: APP_NAME
-              value: "User"
+              value: "Product"
           ports:
             - containerPort: 8000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: product-service
+  namespace: traffic-management
 spec:
   selector:
-    app: user
+    app: product
   ports:
     - port: 8000
       targetPort: 8000
-      name: http-user-service
+      name: http-product-service
